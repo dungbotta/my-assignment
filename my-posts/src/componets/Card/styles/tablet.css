@@ -1,0 +1,8 @@
+.card-wrapper {
+    flex: 1 0 20%;
+    & .card-header {
+        & .post-title {
+            @mixin style-font-poppins 600, 18px;
+        }
+    }
+}

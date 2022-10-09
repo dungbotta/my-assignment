@@ -1,0 +1,18 @@
+:root {
+    @define-mixin style-font-poppins $size: 100, $font-size: 24px, $line-height: 22px ,$letter-spacing: 0px {
+        font-weight: $size;
+        font-family: 'Poppins-$size', Arial;
+        font-size: $font-size;
+        line-height:  $line-height;
+        letter-spacing: $letter-spacing;
+    }
+}
+
+@define-mixin main-button {
+    background-color: var(--color-blue);
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: none;
+    color: white;
+    text-transform: uppercase;
+}

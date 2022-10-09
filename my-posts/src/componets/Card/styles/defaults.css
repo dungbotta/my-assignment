@@ -1,0 +1,55 @@
+.card-wrapper {
+    flex: 1 0 50%;
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    padding: 16px;
+    min-height: 300px;
+    background-color: var(--color-pure-white);
+    border-radius: 10px;
+    & .card-header .post-title,
+    & .card-body .post-content {
+        &::first-letter {
+            text-transform: capitalize;
+        }
+    }
+    & .card-header {
+        & .delete-wrapper {
+            display: flex;
+            justify-content: end;
+            margin-bottom: 10px;
+            & .delete::after {
+                content: 'x';
+                border: solid 1px var(--color-dark-frey);
+                border-radius: 50px;
+                padding: 6px;
+                font-size: 18px;
+            }
+        }
+        & .post-title {
+            @mixin style-font-poppins 600, 22px;
+            color: var(--color-dark-frey);
+            margin: 0;
+        }
+    }
+    & .card-body {
+        & .post-content {
+            @mixin style-font-poppins 400, 14px;
+            color: var(--color-dark-frey);
+        }
+    }
+    & .card-footer {
+        margin-top: auto;
+        & .button-wrapper {
+            display: flex;
+            justify-content: end;
+            & .card-cta-comments {
+                @mixin main-button;
+            }
+            & .card-cta-delete {
+                @mixin main-button;
+                background-color: var(--color-orange);
+            }
+        }
+    }
+}

@@ -1,0 +1,11 @@
+@import '../configs/index.css';
+@import '../../componets/Card/styles/index.css';
+
+.post-container {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: var(--color-dark-blue);
+    &.house {
+        padding: 20px;
+    }
+}
