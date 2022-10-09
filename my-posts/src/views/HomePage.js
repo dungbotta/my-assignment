@@ -1,15 +1,24 @@
 import React, { setState } from "react";
 import Card from '../componets/Card';
+import { postsSkeleton } from "../utility/skeleton";
+import Drawer from "../componets/Drawer";
+
 import { createRequestBody } from "../utility/tools";
-import { getPostsList, deletePost } from "../utility/services"
+import { getPostsList, deletePost, createUpdatePost } from "../utility/services"
 
 class HomePage extends React.Component {
     constructor(props) {
         super(props);
+        this.SKLETON_COUNTER = 8;
         this.state = {
             isLoading: true,
             showError: false,
-            postsList: []
+            postsList: [],
+            showEditDrawer: false,
+            postTitle: '',
+            postDesc: '',
+            postUserId: '',
+            postId: '',
         }
     }
 
@@ -47,22 +56,82 @@ class HomePage extends React.Component {
                     console.log('error deleted post')
                 }
             });
-
         }
-
     }
+
+    /**
+     * This function set post indo to view on edit drawer.
+     * @function
+     * @param {object} postData
+     */
+    handleEditPost = (postData) => {
+        const {
+            userId,
+            id,
+            title,
+            body
+        } = postData;
+        this.setState({
+            postTitle: title,
+            postDesc: body,
+            postId: id,
+            postUserId: userId
+        }, () => {
+            this.handleDrawer();
+        })
+    }
+
+    handleDrawer = () => {
+        this.setState(prevState => {
+            return {
+                ...prevState,
+                showEditDrawer: !prevState.showEditDrawer
+            }
+        })
+    }
+
+    handleFormSubmit = ( formData ) => {
+        const {
+            postTitle,
+            postText
+        } = formData;
+        const {
+            postUserId,
+            postId,
+            postsList
+        } = this.state;
+        const fetchBody = createRequestBody(postTitle, postText, postUserId, postId);
+        createUpdatePost('update', fetchBody).then((response) => {
+            if (response && Object.keys(response).length > 0) {
+                let postListCopy = postsList;
+                let postIndex = postsList.findIndex(post => post.id == postId && post.userId == postUserId);
+                postListCopy[postIndex].title = postTitle;
+                postListCopy[postIndex].body = postText;
+                this.setState({
+                    postsList: postListCopy
+                }, () => {
+                    this.handleDrawer();
+                })
+            }
+        });
+    }
+
+    // RENDER METHOD
 
     render() {
         const { 
             isLoading,
-            postsList 
+            postsList ,
+            showEditDrawer,
+            postTitle,
+            postDesc
         } = this.state;
         return (
             <div className="post-container house">
                 {isLoading ? (
-                    <div>
-                        <p>loading</p> {/* TO DO SKELETHON*/}
-                    </div>
+                    <React.Fragment>
+                        {postsSkeleton()}
+                    </React.Fragment>
                 ) : (
                     <React.Fragment>
                         {postsList && postsList.length > 0 && postsList.map((post, postIndex) => {
@@ -72,10 +141,21 @@ class HomePage extends React.Component {
                                     postData={post}
                                     index={postIndex}
                                     handleDeletePost={this.deleteSelectedPost}
+                                    handleEditPost={this.handleEditPost}
                                 />
                             )
                         })}
                     </React.Fragment>
+                )}
+                {showEditDrawer && (
+                    <Drawer
+                        showBg={showEditDrawer}
+                        handleDrawer={this.handleDrawer}
+                        handleFormSubmit={this.handleFormSubmit}
+                        type={'editPost'}
+                        postTitle={postTitle}
+                        postDesc={postDesc}
+                    />
                 )}
             </div>
         )

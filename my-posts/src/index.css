@@ -3,7 +3,7 @@
 :root {
     --color-pure-white: #ffffff;
     --color-light-grey: #D6D6D6;
-    --color-dark-frey: #2a2a2a;
+    --color-dark-grey: #2a2a2a;
     --color-dark-blue: #103551;
     --color-blue: #2986cc;
     --color-orange: #F6B26B;
@@ -30,7 +30,7 @@
         }
 .card-wrapper .card-header .delete-wrapper .delete::after {
                 content: 'x';
-                border: solid 1px var(--color-dark-frey);
+                border: solid 1px var(--color-dark-grey);
                 border-radius: 50px;
                 padding: 6px;
                 font-size: 18px;
@@ -41,7 +41,7 @@
             font-size: 22px;
             line-height:  22px;
             letter-spacing: 0px;
-            color: var(--color-dark-frey);
+            color: var(--color-dark-grey);
             margin: 0;
         }
 .card-wrapper .card-body .post-content {
@@ -50,14 +50,14 @@
             font-size: 14px;
             line-height:  22px;
             letter-spacing: 0px;
-            color: var(--color-dark-frey);
+            color: var(--color-dark-grey);
         }
 .card-wrapper .card-footer {
         margin-top: auto;
     }
 .card-wrapper .card-footer .button-wrapper {
             display: flex;
-            justify-content: end;
+            justify-content: space-around;
         }
 .card-wrapper .card-footer .button-wrapper .card-cta-comments {
                 background-color: var(--color-blue);
@@ -66,8 +66,9 @@
                 border: none;
                 color: white;
                 text-transform: uppercase;
+                margin-right: 10px
             }
-.card-wrapper .card-footer .button-wrapper .card-cta-delete {
+.card-wrapper .card-footer .button-wrapper .card-cta-edit {
                 background-color: var(--color-blue);
                 padding: 8px 12px;
                 border-radius: 4px;
@@ -87,7 +88,102 @@
             line-height:  22px;
             letter-spacing: 0px;
         }
+    .card-wrapper .card-footer .button-wrapper {
+        justify-content: end;
+    }
 }
+.header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 36px;
+    background-color: var(--color-dark-grey);
+}
+.header-wrapper .header-title-wrapper .title {
+            font-weight: 500;
+            font-family: 'Poppins-500', Arial;
+            font-size: 24px;
+            line-height:  22px;
+            letter-spacing: 0px;
+            color: var(--color-pure-white);
+        }
+.header-wrapper .header-buttons-wrapper {
+        display: flex;
+        justify-content: end;
+    }
+.header-wrapper .header-buttons-wrapper .create-post-cta {
+            background-color: var(--color-blue);
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: none;
+            color: white;
+            text-transform: uppercase;
+            height: 45px;
+        }
+.drawer-bg {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    visibility: hidden;
+    opacity: 0;
+    z-index: 2;
+}
+.drawer-bg.show {
+        visibility: visible;
+        opacity: 1;
+    }
+.form-container {
+
+}
+.drawer-wrapper {
+    position: fixed;
+    width: 90%;
+    z-index: 9;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+.drawer-wrapper .form-container {
+        padding: 20px;
+        border-radius: 5px;
+        position: relative;
+        transition: all 5s ease-in-out;
+        background-color: var(--color-light-grey);
+    }
+.drawer-wrapper .form-container .post-form .field-wrapper {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 16px;
+            }
+.drawer-wrapper .form-container .post-form .field-wrapper .form-text {
+                    font-weight: 600;
+                    font-family: 'Poppins-600', Arial;
+                    font-size: 18px;
+                    line-height:  22px;
+                    letter-spacing: 0px;
+                    background: none;
+                }
+.drawer-wrapper .form-container .post-form .field-wrapper .form-text-input,
+                .drawer-wrapper .form-container .post-form .field-wrapper .form-title-input {
+                    margin-bottom: 6px;
+                    padding: 16px;
+                }
+.drawer-wrapper .form-container .post-form .field-wrapper .form-text-input {
+                    min-height: 300px;
+                }
+.drawer-wrapper .form-container .post-form .field-wrapper .error-message {
+                    font-weight: 400;
+                    font-family: 'Poppins-400', Arial;
+                    font-size: 11px;
+                    line-height:  10px;
+                    letter-spacing: 0px;
+                    color: red;
+                    margin: 0;
+                }
 .post-container {
     display: flex;
     flex-wrap: wrap;

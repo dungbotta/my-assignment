@@ -1,0 +1,21 @@
+.header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 36px;
+    background-color: var(--color-dark-grey);
+    & .header-title-wrapper {
+        & .title {
+            @mixin style-font-poppins 500, 24px;
+            color: var(--color-pure-white);
+        }
+    }
+    & .header-buttons-wrapper {
+        display: flex;
+        justify-content: end;
+        & .create-post-cta {
+            @mixin main-button;
+            height: 45px;
+        }
+    }
+}

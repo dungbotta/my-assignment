@@ -4,7 +4,8 @@ function Card(props) {
     const {
         postData = {},
         index,
-        handleDeletePost
+        handleDeletePost,
+        handleEditPost
     } = props;
 
     return (
@@ -22,7 +23,17 @@ function Card(props) {
                 <div className="button-wrapper">
                     <button
                         className="card-cta-comments"
-                    > View comments</button>
+                    >
+                        View comments
+                    </button>
+                    <button
+                        className="card-cta-edit"
+                        onClick={() => {
+                            handleEditPost(postData)
+                        }}
+                    >
+                        Edit post
+                    </button>
                 </div>
             </div>
         </div>

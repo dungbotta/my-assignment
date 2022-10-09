@@ -12,7 +12,17 @@ const getPostsList = () => {
 }
 
 const createUpdatePost = (type, body) => {
-
+    const url = type ? type === 'new' ? BASE_URL : BASE_URL + '/' + body.id : '';
+    return fetch(url, {
+        method: type ? type === 'new' ? METHOD.create : METHOD.update : '',
+        body: JSON.stringify(body),
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+        },
+    })
+    .then((response) => response.json())
+    .then(reponseData => reponseData)
+    .catch(error => console.error(error));
 }
 
 const deletePost = (postId) => {

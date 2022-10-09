@@ -1,4 +1,4 @@
-const createRequestBody = (postTitle, postBody, postUserId, postId ) => {
+const createRequestBody = (postTitle, postBody, postUserId, postId = '' ) => {
     return {
         title: postTitle,
         body: postBody,

@@ -5,4 +5,7 @@
             @mixin style-font-poppins 600, 18px;
         }
     }
+    & .card-footer .button-wrapper {
+        justify-content: end;
+    }
 }
