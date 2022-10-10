@@ -54,3 +54,29 @@
         }
     }
 }
+
+/* COMMENTS START */
+.comments-container {
+    padding: 18px;
+    height: auto;
+    width: 100%;
+    background: var(--color-pure-white);
+    & .comment-wrapper {
+        border-radius: 6px;
+        border: none;
+        background-color: rgba(214,214,214, 0.3);
+        padding: 12px 24px;
+        margin-bottom: 16px;
+        &:last-child {
+            margin-bottom: 0;
+        }
+        & .comment-email {
+            @mixin style-font-poppins 600, 14px;
+            color: var();
+        }
+        & .comment-text {
+            @mixin style-font-poppins 400, 14px;
+            margin-top: 12px;
+        }
+    }
+}

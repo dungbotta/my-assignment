@@ -99,6 +99,11 @@ function postsSkeleton() {
     )
 }
 
+function commentsSkeleton() {
+
+}
+
 export {
-    postsSkeleton
+    postsSkeleton,
+    commentsSkeleton
 }

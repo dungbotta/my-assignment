@@ -11,6 +11,14 @@ const getPostsList = () => {
     .catch(error => console.error(error));
 }
 
+const getCommentsList = (postId) => {
+    const url = `${BASE_URL}/${postId}/comments`
+    return fetch(url)
+    .then((response) => response.json())
+    .then(reponseData => reponseData)
+    .catch(error => console.error(error));
+}
+
 const createUpdatePost = (type, body) => {
     const url = type ? type === 'new' ? BASE_URL : BASE_URL + '/' + body.id : '';
     return fetch(url, {
@@ -36,5 +44,6 @@ const deletePost = (postId) => {
 export {
     getPostsList,
     createUpdatePost,
-    deletePost
+    deletePost,
+    getCommentsList
 }

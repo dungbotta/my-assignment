@@ -4,7 +4,7 @@ import { postsSkeleton } from "../utility/skeleton";
 import Drawer from "../componets/Drawer";
 
 import { createRequestBody } from "../utility/tools";
-import { getPostsList, deletePost, createUpdatePost } from "../utility/services"
+import { getPostsList, deletePost, createUpdatePost, getCommentsList } from "../utility/services"
 
 class HomePage extends React.Component {
     constructor(props) {
@@ -19,6 +19,8 @@ class HomePage extends React.Component {
             postDesc: '',
             postUserId: '',
             postId: '',
+            postIdCommentsToDisplay: -1,
+            commentList: []
         }
     }
 
@@ -116,7 +118,34 @@ class HomePage extends React.Component {
         });
     }
 
-    // RENDER METHOD
+    /**
+     * This function handel show/hide comments drawer and fetch to have postId's comments to render.
+     * @function
+     * @param {number} postIndex
+     * @param {string} postId
+     */
+    handleShowComments = (postIndex, postId) => {
+        const { postIdCommentsToDisplay } = this.state;
+        // open drawer and fetch api call
+        const haveToHide = postIndex == postIdCommentsToDisplay
+        this.setState({
+            postIdCommentsToDisplay: haveToHide ? -1 : postIndex
+        }, () => {
+            // if open drawer we have to make API call to have comments
+            if (!haveToHide) {
+                getCommentsList(postId).then((response) => {
+                    if (response && response.length > 0) {
+                        this.setState({
+                            commentList: response
+                        })
+                    } else {
+                        console.log('error load comments');
+                    }
+                })
+            }
+        })
+
+    }
 
     render() {
         const { 
@@ -124,7 +153,9 @@ class HomePage extends React.Component {
             postsList ,
             showEditDrawer,
             postTitle,
-            postDesc
+            postDesc,
+            postIdCommentsToDisplay,
+            commentList
         } = this.state;
         return (
             <div className="post-container house">
@@ -142,6 +173,9 @@ class HomePage extends React.Component {
                                     index={postIndex}
                                     handleDeletePost={this.deleteSelectedPost}
                                     handleEditPost={this.handleEditPost}
+                                    handleShowComments={this.handleShowComments}
+                                    showComments={postIdCommentsToDisplay === postIndex}
+                                    commentList={postIdCommentsToDisplay === postIndex ? commentList : []}
                                 />
                             )
                         })}
