@@ -15,9 +15,6 @@
     }
 }
 
-.form-container {
-
-}
 .drawer-wrapper {
     position: fixed;
     width: 90%;
@@ -38,6 +35,7 @@
                 margin-bottom: 16px;
                 & .form-text {
                     @mixin  style-font-poppins 600, 18px;
+                    color: var(--color-dark-grey);
                     background: none;
                 }
                 & .form-text-input,
@@ -52,6 +50,9 @@
                     @mixin  style-font-poppins 400, 11px, 10px;
                     color: red;
                     margin: 0;
+                }
+                & .form-submit-cta {
+                    @mixin main-button;
                 }
             }
         }

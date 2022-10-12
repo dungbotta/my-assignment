@@ -1,0 +1,7 @@
+.drawer-wrapper .form-container {
+    & .post-form .field-wrapper {
+        & .form-text {
+            margin-bottom: 10px;
+        }
+    }
+}

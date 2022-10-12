@@ -1,7 +1,8 @@
 @import '../configs/index.css';
-@import '../../componets/Card/styles/index.css';
-@import '../../componets/Header/styles/index.css';
-@import '../../componets/Drawer/styles/index.css';
+@import '../../components/Card/styles/index.css';
+@import '../../components/Header/styles/index.css';
+@import '../../components/Drawer/styles/index.css';
+@import '../../components/Pagination/styles/index.css';
 
 .post-container {
     display: flex;

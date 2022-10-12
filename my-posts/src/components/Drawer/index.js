@@ -54,7 +54,7 @@ function Drawer(props) {
                             />
                             {errors.postText && <p className="error-message" role="alert">{errors.postText.message}</p>}
                         </div>
-                        <input type="submit" />
+                        <input type="submit" className="form-submit-cta"/>
                     </form>
                 </div>
             </div>

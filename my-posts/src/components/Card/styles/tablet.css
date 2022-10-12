@@ -1,5 +1,5 @@
 .card-wrapper {
-    flex: 1 0 20%;
+    min-height: 200px;
     & .card-header {
         & .post-title {
             @mixin style-font-poppins 600, 18px;

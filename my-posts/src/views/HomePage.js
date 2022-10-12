@@ -1,15 +1,18 @@
 import React, { setState } from "react";
-import Card from '../componets/Card';
+import Card from '../components/Card';
 import { postsSkeleton } from "../utility/skeleton";
-import Drawer from "../componets/Drawer";
+import Drawer from "../components/Drawer";
 
 import { createRequestBody } from "../utility/tools";
 import { getPostsList, deletePost, createUpdatePost, getCommentsList } from "../utility/services"
+import Pagination from "../components/Pagination";
 
 class HomePage extends React.Component {
     constructor(props) {
         super(props);
         this.SKLETON_COUNTER = 8;
+        this.MAX_POST_TO_RENDER = 6;
+        let presetPage = sessionStorage.getItem('page') ? sessionStorage.getItem('page') : sessionStorage.setItem('page', 1);
         this.state = {
             isLoading: true,
             showError: false,
@@ -20,7 +23,10 @@ class HomePage extends React.Component {
             postUserId: '',
             postId: '',
             postIdCommentsToDisplay: -1,
-            commentList: []
+            commentList: [],
+            page: 1,
+            totalPages: 0,
+            postToShow: []
         }
     }
 
@@ -29,11 +35,16 @@ class HomePage extends React.Component {
     }
 
     seInitialState = () => {
+        const { page } = this.state;
         getPostsList().then(response => {
             if (response && response.length) {
+                let postsList = response;
+                const postToRender = postsList.slice(this.MAX_POST_TO_RENDER * page, this.MAX_POST_TO_RENDER * (page + 1));
                 this.setState({
-                    postsList: response,
-                    isLoading: false
+                    postsList,
+                    postToShow: postToRender,
+                    isLoading: false,
+                    totalPages: this.getNumberOfPages(response.length)
                 })
             } else {
                 this.setState({
@@ -147,6 +158,23 @@ class HomePage extends React.Component {
 
     }
 
+    // TOOLS
+    getNumberOfPages = (totalResults) => {
+        return Math.ceil(totalResults/this.MAX_POST_TO_RENDER);
+    }
+
+    goToPage = (event, pageNumber) => {
+        const { postsList } = this.state;
+        event.preventDefault();
+        const postToRender = postsList.slice(this.MAX_POST_TO_RENDER * pageNumber, this.MAX_POST_TO_RENDER * (pageNumber + 1));
+        this.setState({
+            page: pageNumber,
+            postToShow: postToRender
+        }, () => {
+            sessionStorage.setItem('page', pageNumber);
+        })
+    }
+
     render() {
         const { 
             isLoading,
@@ -155,7 +183,10 @@ class HomePage extends React.Component {
             postTitle,
             postDesc,
             postIdCommentsToDisplay,
-            commentList
+            commentList,
+            page,
+            totalPages,
+            postToShow
         } = this.state;
         return (
             <div className="post-container house">
@@ -165,7 +196,7 @@ class HomePage extends React.Component {
                     </React.Fragment>
                 ) : (
                     <React.Fragment>
-                        {postsList && postsList.length > 0 && postsList.map((post, postIndex) => {
+                        {postToShow && postToShow.length > 0 && postToShow.map((post, postIndex) => {
                             return (
                                 <Card
                                     key={postIndex}
@@ -189,6 +220,13 @@ class HomePage extends React.Component {
                         type={'editPost'}
                         postTitle={postTitle}
                         postDesc={postDesc}
+                    />
+                )}
+                {totalPages > 0 && (
+                    <Pagination
+                        page={page}
+                        pages={totalPages}
+                        handlePageChange={this.goToPage}
                     />
                 )}
             </div>
