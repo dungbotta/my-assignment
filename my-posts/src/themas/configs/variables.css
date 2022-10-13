@@ -4,9 +4,11 @@
 /* Colors */
 :root {
     --color-pure-white: #ffffff;
-    --color-light-grey: #D6D6D6;
+    --color-light-grey: #f5f5f5;
     --color-dark-grey: #2a2a2a;
+    --color-grey: #63666a;
     --color-dark-blue: #103551;
     --color-blue: #2986cc;
     --color-orange: #F6B26B;
+    --color-black: #292929;
 }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Drawer from "../Drawer";
 
-import { createRequestBody } from "../../utility/tools";
+import { createRequestBody, noSroll } from "../../utility/tools";
 import { createUpdatePost } from "../../utility/services";
 
 function Header(props) {
@@ -37,6 +37,7 @@ function Header(props) {
                     className="create-post-cta"
                     onClick={() => {
                         handleDrawer();
+                        noSroll(true);
                     }}
                     >
                     create new post

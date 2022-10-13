@@ -1,8 +1,12 @@
+import React from 'react';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
+
 function Pagination(props) {
     const {
         page,
         pages,
-        handlePageChange
+        handlePageChange,
+        isMobile
     } = props;
 
     const pageList = [],
@@ -30,25 +34,33 @@ function Pagination(props) {
                 <a className={`page-prev ${disabledPrevPage ? 'hide' : ''}`}
                    disabled={disabledPrevPage}
                    onClick={(e) => {handlePageChange(e, page - 1)}}
-                ></a>
-                {pageList.map((element, index) => {
-                    if (element == separator) {
-                        return <span className="page-separator">{separator}</span>
-                    } else {
-                        return (
-                            <a key={index}
-                            className={`page-button ${page == element - 1 ? 'page-selected' : ''}`}
-                                onClick={(e) => {handlePageChange(e, element - 1)}}
-                            >
-                                {element}
-                            </a>
-                        )
-                    }
-                })}
+                ><FaChevronLeft className='icon'/></a>
+                {isMobile ? (
+                    <div className='mobile-pagination'>
+                        <span className='current-page' key={1}>{`${page + 1} / ${pages}`}</span>
+                    </div>
+                ) : ( 
+                    <React.Fragment>
+                        {pageList.map((element, index) => {
+                        if (element == separator) {
+                            return <span className="page-separator" key={index}>{separator}</span>
+                        } else {
+                            return (
+                                <a key={index}
+                                className={`page-button ${page == element - 1 ? 'page-selected' : ''}`}
+                                    onClick={(e) => {handlePageChange(e, element - 1)}}
+                                >
+                                    {element}
+                                </a>
+                                )
+                            }
+                        })}
+                    </React.Fragment>
+                )}
                 <a className={`page-next ${disableNextPage ? 'hide' : ''}`}
                    disabled={disableNextPage}
                    onClick={(e) => {handlePageChange(e, page + 1)}}
-                ></a>
+                ><FaChevronRight className='icon'/></a>
             </div>
         </div>
     )

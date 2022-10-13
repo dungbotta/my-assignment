@@ -3,7 +3,7 @@ import Card from '../components/Card';
 import { postsSkeleton } from "../utility/skeleton";
 import Drawer from "../components/Drawer";
 
-import { createRequestBody } from "../utility/tools";
+import { createRequestBody, VIEWPORT_TYPE, watchBreakPoint, noSroll } from "../utility/tools";
 import { getPostsList, deletePost, createUpdatePost, getCommentsList } from "../utility/services"
 import Pagination from "../components/Pagination";
 
@@ -12,7 +12,6 @@ class HomePage extends React.Component {
         super(props);
         this.SKLETON_COUNTER = 8;
         this.MAX_POST_TO_RENDER = 6;
-        let presetPage = sessionStorage.getItem('page') ? sessionStorage.getItem('page') : sessionStorage.setItem('page', 1);
         this.state = {
             isLoading: true,
             showError: false,
@@ -24,14 +23,26 @@ class HomePage extends React.Component {
             postId: '',
             postIdCommentsToDisplay: -1,
             commentList: [],
-            page: 1,
+            page: 0,
             totalPages: 0,
-            postToShow: []
+            postToShow: [],
+            isMobile: false
         }
     }
 
     componentDidMount() {
+        let mobile = watchBreakPoint(VIEWPORT_TYPE.MOBILE);
+        this.checkBV(mobile);
+        mobile.addListener((mobile) => {
+            this.checkBV(mobile);
+        })
         this.seInitialState();
+    }
+
+    checkBV = (view) => {
+        this.setState({
+            isMobile: view.matches
+        })
     }
 
     seInitialState = () => {
@@ -57,14 +68,16 @@ class HomePage extends React.Component {
     }
 
     deleteSelectedPost = (postId) => {
-        const { postsList } = this.state;
+        const { postsList, page } = this.state;
         if(postId) {
             deletePost(postId).then((res) => {
                 if (res) {
                     // remove post from List
+                    let newPostList = postsList.filter(post => post.id != postId);
+                    const newPostToShow = newPostList.slice(this.MAX_POST_TO_RENDER * page, this.MAX_POST_TO_RENDER * (page + 1));
                     this.setState({
-                        postsList: postsList.filter(post => post.id != postId)
-                    })
+                        postToShow: newPostToShow
+                    });
                 } else {
                     console.log('error deleted post')
                 }
@@ -124,6 +137,7 @@ class HomePage extends React.Component {
                     postsList: postListCopy
                 }, () => {
                     this.handleDrawer();
+                    noSroll(false);
                 })
             }
         });
@@ -186,7 +200,8 @@ class HomePage extends React.Component {
             commentList,
             page,
             totalPages,
-            postToShow
+            postToShow,
+            isMobile
         } = this.state;
         return (
             <div className="post-container house">
@@ -207,6 +222,7 @@ class HomePage extends React.Component {
                                     handleShowComments={this.handleShowComments}
                                     showComments={postIdCommentsToDisplay === postIndex}
                                     commentList={postIdCommentsToDisplay === postIndex ? commentList : []}
+                                    isMobile={isMobile}
                                 />
                             )
                         })}
@@ -227,6 +243,7 @@ class HomePage extends React.Component {
                         page={page}
                         pages={totalPages}
                         handlePageChange={this.goToPage}
+                        isMobile={isMobile}
                     />
                 )}
             </div>

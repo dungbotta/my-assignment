@@ -1,7 +1,9 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
+import { FaRegWindowClose } from 'react-icons/fa';
 import * as yup from "yup";
+import { noSroll } from "../../utility/tools";
 
 function Drawer(props) {
     const {
@@ -30,7 +32,22 @@ function Drawer(props) {
             </div>
             <div className="drawer-wrapper">
                 <div className="form-container">
-                    <h3>{type == 'newPost' ? newPost : editPost}</h3>
+                    <div className="form-header">
+                        <div className="close-drawer">
+                            <button
+                                style={{background: 'none', border: 'none'}}
+                                onClick={() => {
+                                    handleDrawer();
+                                    noSroll(false);
+                                }}
+                            >
+                                <FaRegWindowClose className="icon"/>
+                            </button>
+                        </div>
+                        <div className="title-wrapper">
+                            <h3 className="form-title">{type == 'newPost' ? newPost : editPost}</h3>
+                        </div>
+                    </div>
                     <form className="post-form" onSubmit={handleSubmit(onSubmit)}>
                         <div className="field-wrapper">
                             <label className="form-text">Title</label>
@@ -54,7 +71,9 @@ function Drawer(props) {
                             />
                             {errors.postText && <p className="error-message" role="alert">{errors.postText.message}</p>}
                         </div>
-                        <input type="submit" className="form-submit-cta"/>
+                        <div className="form-footer">
+                            <input type="submit" className="form-submit-cta"/> 
+                        </div>
                     </form>
                 </div>
             </div>

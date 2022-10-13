@@ -3,48 +3,49 @@
     justify-content: center;
     width: 100%;
     margin: 16px 0;
-    & .page-prev,
-    & .page-next {
-        color: var(--color-pure-white);
-        margin: 0 10px;
-        &.hide {
-            visibility: hidden;
-            z-index: -1;
+    & .pagination-container {
+        display: flex;
+        align-items: center;
+        & .mobile-pagination {
+            & .current-page {
+                @mixin style-font-poppins 400, 16px;
+                color: var(--color-pure-white);
+            }
         }
-        &:hover {
-            cursor: pointer;
+        & .page-prev,
+        & .page-next {
+            color: var(--color-pure-white);
+            margin: 0 10px;
+            &.hide {
+                visibility: hidden;
+                z-index: -1;
+            }
+            &:hover {
+                cursor: pointer;
+            }
         }
-    }
-    & .page-prev {
-        &::before {
-            content: '<';
-            font-weight: 700;
-            font-size: 16px;
+        & .page-prev .icon,
+        & .page-next .icon {
+            
         }
-    }
-    & .page-next {
-        &::before {
-            content: '>';
-            font-weight: 700;
-            font-size: 16px;
+    
+        & .page-separator {
+            color: rgba(255, 255, 255, 0.5);
+            margin: 0 10px;
         }
-    }
-    & .page-separator {
-        color: rgba(255, 255, 255, 0.5);
-        margin: 0 10px;
-    }
-    & .page-button {
-        @mixin style-font-poppins 400, 16px;
-        color: rgba(255, 255, 255, 0.5);
-        margin: 0 10px;
-        min-width: 18px;
-        width: 18px;
-        &.page-selected {
-            font-weight: 700;
-            color: rgba(255, 255, 255, 1);
-        }
-        &:hover {
-            cursor: pointer;
+        & .page-button {
+            @mixin style-font-poppins 400, 16px;
+            color: rgba(255, 255, 255, 0.5);
+            margin: 0 10px;
+            min-width: 18px;
+            width: 18px;
+            &.page-selected {
+                font-weight: 700;
+                color: rgba(255, 255, 255, 1);
+            }
+            &:hover {
+                cursor: pointer;
+            }
         }
     }
 }

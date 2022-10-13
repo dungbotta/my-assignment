@@ -14,5 +14,7 @@
     border-radius: 4px;
     border: none;
     color: white;
-    text-transform: uppercase;
+    text-transformcursor: pointer;
+    cursor: pointer;
+
 }
