@@ -1,0 +1,5 @@
+.header-wrapper .header-buttons-wrapper{
+    & .create-post-cta:hover {
+        background: rgba(41,134,204, 0.8);
+    }
+}

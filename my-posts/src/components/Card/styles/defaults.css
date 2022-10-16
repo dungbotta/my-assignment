@@ -24,6 +24,7 @@
                 & .icon {
                     font-size: 18px;
                     color: #E06666;
+                    padding: 8px;
                 }
             }
             & .post-title {

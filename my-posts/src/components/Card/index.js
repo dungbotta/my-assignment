@@ -14,7 +14,8 @@ function Card(props) {
         handleShowComments,
         showComments = false,
         commentList = [],
-        isMobile
+        isMobile,
+        isCommentsLoading
     } = props;
 
     const renderComments = () => {
@@ -23,12 +24,10 @@ function Card(props) {
                 items={showComments}
                 from={{ 
                     opacity: 0,
-                    // transform: 'translate3d(0,5%,0)'
                     transform: isMobile ? 'translateY(-100px)' : 'translateY(100px)'
                 }}
                 enter={{
                     opacity: 1,
-                    // transform: 'translate3d(0,0,0)'
                     transform: 'translateY(0px)'
                 }}
                 leave={{
@@ -56,7 +55,7 @@ function Card(props) {
                             </button>
                         </div>
                     )}
-                    {commentList.length == 0 ? (
+                    {isCommentsLoading ? (
                         <React.Fragment>
                             {commentsSkeleton()}
                         </React.Fragment>

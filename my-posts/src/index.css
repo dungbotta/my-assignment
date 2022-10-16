@@ -3,7 +3,7 @@
 :root {
     --color-pure-white: #ffffff;
     --color-light-grey: #f5f5f5;
-    --color-dark-grey: #2a2a2a;
+    --color-dark-grey: #7e7e7e;
     --color-grey: #63666a;
     --color-dark-blue: #103551;
     --color-blue: #2986cc;
@@ -37,6 +37,7 @@
 .card-container .card-wrapper .card-header .delete-wrapper .icon {
                     font-size: 18px;
                     color: #E06666;
+                    padding: 8px;
                 }
 .card-container .card-wrapper .card-header .post-title {
                 font-weight: 600;
@@ -166,6 +167,11 @@
             border-bottom-left-radius: 0;;
             box-shadow: 8px 8px 10px rgba(0,0,0, 0.12);
         }
+            .card-container .card-wrapper .card-header .delete-wrapper .icon:hover {
+                background: var(--color-dark-grey);
+                color: var(--color-pure-white);
+                border-radius: 50px;
+            }
             .card-container .card-wrapper .card-header .post-title {
                 font-weight: 600;
                 font-family: 'Poppins-600', Arial;
@@ -181,8 +187,14 @@
                     font-size: 22px;
                     margin-right: 10px;
                 }
+                .card-container .card-wrapper .card-footer .button-wrapper .card-cta-comments:hover {
+                    background: rgba(41,134,204, 0.8);
+                }
                 .card-container .card-wrapper .card-footer .button-wrapper .card-cta-edit .icon {
                     font-size: 18px;
+                }
+                .card-container .card-wrapper .card-footer .button-wrapper .card-cta-edit:hover {
+                    background: rgba(246,178,107, 0.8);
                 }
 
     /* COMMENTS START */
@@ -201,7 +213,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 36px;
-    background-color: var(--color-dark-grey);
+    background-color: #292929;
 }
 .header-wrapper .header-title-wrapper .title {
             font-weight: 500;
@@ -223,8 +235,14 @@
             color: white;
             text-transformcursor: pointer;
             cursor: pointer;
+            text-transform: uppercase;
             height: 45px;
         }
+@media (min-width: 768px) {
+    .header-wrapper .header-buttons-wrapper .create-post-cta:hover {
+        background: rgba(41,134,204, 0.8);
+    }
+}
 .drawer-bg {
     position: fixed;
     top: 0;
@@ -235,7 +253,7 @@
     transition: opacity 500ms;
     visibility: hidden;
     opacity: 0;
-    z-index: 2;
+    z-index: 3;
 }
 .drawer-bg.show {
         visibility: visible;

@@ -1,11 +1,13 @@
-const BASE_URL = 'https://jsonplaceholder.typicode.com/posts';
+const BASE_URL = 'http://localhost:3001/posts';
 const METHOD = {
     delete: 'DELETE',
     update: 'PUT',
     create: 'POST'
 }
 const getPostsList = () => {
-    return fetch(BASE_URL)
+    return fetch(BASE_URL, {
+        headers: {'Access-Control-Allow-Origin' : '*'}
+    })
     .then((response) => response.json())
     .then(reponseData => reponseData)
     .catch(error => console.error(error));

@@ -20,7 +20,7 @@ function Drawer(props) {
       }).required();
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm({resolver: yupResolver(schema)});
-    const newPost = 'Edit new post',
+    const newPost = 'New post',
           editPost = 'Edit post';
     const onSubmit = (formData) => {
         handleFormSubmit(formData);
@@ -28,7 +28,7 @@ function Drawer(props) {
 
     return (
         <React.Fragment>
-            <div className={`drawer-bg ${showBg ? 'show' : ''}`} onClick={() => {handleDrawer()}}>
+            <div className={`drawer-bg ${showBg ? 'show' : ''}`} onClick={() => {handleDrawer(); noSroll(false);}}>
             </div>
             <div className="drawer-wrapper">
                 <div className="form-container">
@@ -45,7 +45,7 @@ function Drawer(props) {
                             </button>
                         </div>
                         <div className="title-wrapper">
-                            <h3 className="form-title">{type == 'newPost' ? newPost : editPost}</h3>
+                            <h3 className="form-title">{type === 'newPost' ? newPost : editPost}</h3>
                         </div>
                     </div>
                     <form className="post-form" onSubmit={handleSubmit(onSubmit)}>

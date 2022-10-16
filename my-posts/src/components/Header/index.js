@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import PubSub from "pubsub-js";
 import Drawer from "../Drawer";
 
+import { topics } from "../../utility/pubSubTopics";
 import { createRequestBody, noSroll } from "../../utility/tools";
-import { createUpdatePost } from "../../utility/services";
+import { createUpdatePost, getPostsList } from "../../utility/services";
 
 function Header(props) {
     const {
@@ -23,7 +25,13 @@ function Header(props) {
         const randomUserid = Math.floor(Math.random() * 10);
         const fetchBody = createRequestBody(postTitle, postText, randomUserid);
         createUpdatePost('new', fetchBody).then((response) => {
-            console.log(JSON.stringify(response))
+            if (response && Object.keys(response).length > 0) {
+                PubSub.publish(topics.POST_LIST, 'reload posts');
+                handleDrawer();
+                noSroll(false);
+            } else {
+                console.alert('Error insert new post');
+            }
         });
     }
 

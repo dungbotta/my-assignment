@@ -3,7 +3,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 36px;
-    background-color: var(--color-dark-grey);
+    background-color: #292929;
     & .header-title-wrapper {
         & .title {
             @mixin style-font-poppins 500, 24px;
@@ -15,6 +15,7 @@
         justify-content: end;
         & .create-post-cta {
             @mixin main-button;
+            text-transform: uppercase;
             height: 45px;
         }
     }

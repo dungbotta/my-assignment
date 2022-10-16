@@ -42,12 +42,12 @@ function Pagination(props) {
                 ) : ( 
                     <React.Fragment>
                         {pageList.map((element, index) => {
-                        if (element == separator) {
+                        if (element === separator) {
                             return <span className="page-separator" key={index}>{separator}</span>
                         } else {
                             return (
                                 <a key={index}
-                                className={`page-button ${page == element - 1 ? 'page-selected' : ''}`}
+                                className={`page-button ${page === element - 1 ? 'page-selected' : ''}`}
                                     onClick={(e) => {handlePageChange(e, element - 1)}}
                                 >
                                     {element}

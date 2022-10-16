@@ -1,8 +1,10 @@
-import React, { setState } from "react";
+import React from "react";
 import Card from '../components/Card';
 import { postsSkeleton } from "../utility/skeleton";
 import Drawer from "../components/Drawer";
+import PubSub from "pubsub-js";
 
+import { topics } from "../utility/pubSubTopics";
 import { createRequestBody, VIEWPORT_TYPE, watchBreakPoint, noSroll } from "../utility/tools";
 import { getPostsList, deletePost, createUpdatePost, getCommentsList } from "../utility/services"
 import Pagination from "../components/Pagination";
@@ -26,17 +28,28 @@ class HomePage extends React.Component {
             page: 0,
             totalPages: 0,
             postToShow: [],
-            isMobile: false
+            isMobile: false,
+            isCommentsLoading: false
         }
     }
-
+    
     componentDidMount() {
         let mobile = watchBreakPoint(VIEWPORT_TYPE.MOBILE);
         this.checkBV(mobile);
         mobile.addListener((mobile) => {
             this.checkBV(mobile);
         })
+        this.getPosts = PubSub.subscribe(topics.POST_LIST, (_topic, value) => {
+            if (value) {
+                this.seInitialState();
+            }
+        })
         this.seInitialState();
+    }
+
+    componentWillUnmount() {
+        // unsubscribe this subscriber from this topic
+        PubSub.unsubscribe(this.getPosts);
     }
 
     checkBV = (view) => {
@@ -68,16 +81,17 @@ class HomePage extends React.Component {
     }
 
     deleteSelectedPost = (postId) => {
-        const { postsList, page } = this.state;
+        // const { postsList, page } = this.state;
         if(postId) {
             deletePost(postId).then((res) => {
                 if (res) {
                     // remove post from List
-                    let newPostList = postsList.filter(post => post.id != postId);
-                    const newPostToShow = newPostList.slice(this.MAX_POST_TO_RENDER * page, this.MAX_POST_TO_RENDER * (page + 1));
-                    this.setState({
-                        postToShow: newPostToShow
-                    });
+                    // let newPostList = postsList.filter(post => post.id != postId);
+                    // const newPostToShow = newPostList.slice(this.MAX_POST_TO_RENDER * page, this.MAX_POST_TO_RENDER * (page + 1));
+                    // this.setState({
+                    //     postToShow: newPostToShow
+                    // });
+                    this.seInitialState();
                 } else {
                     console.log('error deleted post')
                 }
@@ -129,16 +143,19 @@ class HomePage extends React.Component {
         const fetchBody = createRequestBody(postTitle, postText, postUserId, postId);
         createUpdatePost('update', fetchBody).then((response) => {
             if (response && Object.keys(response).length > 0) {
-                let postListCopy = postsList;
-                let postIndex = postsList.findIndex(post => post.id == postId && post.userId == postUserId);
-                postListCopy[postIndex].title = postTitle;
-                postListCopy[postIndex].body = postText;
-                this.setState({
-                    postsList: postListCopy
-                }, () => {
-                    this.handleDrawer();
-                    noSroll(false);
-                })
+                // let postListCopy = postsList;
+                // let postIndex = postsList.findIndex(post => post.id == postId && post.userId == postUserId);
+                // postListCopy[postIndex].title = postTitle;
+                // postListCopy[postIndex].body = postText;
+                // this.setState({
+                //     postsList: postListCopy
+                // }, () => {
+                //     this.handleDrawer();
+                //     noSroll(false);
+                // })
+                this.seInitialState();
+                this.handleDrawer();
+                noSroll(false);
             }
         });
     }
@@ -152,8 +169,9 @@ class HomePage extends React.Component {
     handleShowComments = (postIndex, postId) => {
         const { postIdCommentsToDisplay } = this.state;
         // open drawer and fetch api call
-        const haveToHide = postIndex == postIdCommentsToDisplay
+        const haveToHide = postIndex === postIdCommentsToDisplay
         this.setState({
+            isCommentsLoading: true,
             postIdCommentsToDisplay: haveToHide ? -1 : postIndex
         }, () => {
             // if open drawer we have to make API call to have comments
@@ -161,6 +179,7 @@ class HomePage extends React.Component {
                 getCommentsList(postId).then((response) => {
                     if (response && response.length > 0) {
                         this.setState({
+                            isCommentsLoading: false,
                             commentList: response
                         })
                     } else {
@@ -201,52 +220,58 @@ class HomePage extends React.Component {
             page,
             totalPages,
             postToShow,
-            isMobile
+            isMobile,
+            isCommentsLoading
         } = this.state;
         return (
-            <div className="post-container house">
-                {isLoading ? (
-                    <React.Fragment>
-                        {postsSkeleton()}
-                    </React.Fragment>
-                ) : (
-                    <React.Fragment>
-                        {postToShow && postToShow.length > 0 && postToShow.map((post, postIndex) => {
-                            return (
-                                <Card
-                                    key={postIndex}
-                                    postData={post}
-                                    index={postIndex}
-                                    handleDeletePost={this.deleteSelectedPost}
-                                    handleEditPost={this.handleEditPost}
-                                    handleShowComments={this.handleShowComments}
-                                    showComments={postIdCommentsToDisplay === postIndex}
-                                    commentList={postIdCommentsToDisplay === postIndex ? commentList : []}
-                                    isMobile={isMobile}
-                                />
-                            )
-                        })}
-                    </React.Fragment>
-                )}
-                {showEditDrawer && (
-                    <Drawer
-                        showBg={showEditDrawer}
-                        handleDrawer={this.handleDrawer}
-                        handleFormSubmit={this.handleFormSubmit}
-                        type={'editPost'}
-                        postTitle={postTitle}
-                        postDesc={postDesc}
-                    />
-                )}
-                {totalPages > 0 && (
-                    <Pagination
-                        page={page}
-                        pages={totalPages}
-                        handlePageChange={this.goToPage}
-                        isMobile={isMobile}
-                    />
-                )}
-            </div>
+            <React.Fragment>
+                <div className="post-container house">
+                    {/* <div className="conta"> */}
+                        {isLoading ? (
+                            <React.Fragment>
+                                {postsSkeleton()}
+                            </React.Fragment>
+                        ) : (
+                            <React.Fragment>
+                                {postToShow && postToShow.length > 0 && postToShow.map((post, postIndex) => {
+                                    return (
+                                        <Card
+                                            key={postIndex}
+                                            postData={post}
+                                            index={postIndex}
+                                            handleDeletePost={this.deleteSelectedPost}
+                                            handleEditPost={this.handleEditPost}
+                                            handleShowComments={this.handleShowComments}
+                                            showComments={postIdCommentsToDisplay === postIndex}
+                                            commentList={postIdCommentsToDisplay === postIndex ? commentList : []}
+                                            isMobile={isMobile}
+                                            isCommentsLoading={isCommentsLoading}
+                                        />
+                                    )
+                                })}
+                            </React.Fragment>
+                        )}
+                    {/* </div> */}
+                    {showEditDrawer && (
+                        <Drawer
+                            showBg={showEditDrawer}
+                            handleDrawer={this.handleDrawer}
+                            handleFormSubmit={this.handleFormSubmit}
+                            type={'editPost'}
+                            postTitle={postTitle}
+                            postDesc={postDesc}
+                        />
+                    )}
+                    {totalPages > 0 && !isLoading && (
+                        <Pagination
+                            page={page}
+                            pages={totalPages}
+                            handlePageChange={this.goToPage}
+                            isMobile={isMobile}
+                        />
+                    )}
+                </div>
+            </React.Fragment>
         )
     }
 }

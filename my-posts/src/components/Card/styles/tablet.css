@@ -10,6 +10,11 @@
             box-shadow: 8px 8px 10px rgba(0,0,0, 0.12);
         }
         & .card-header {
+            & .delete-wrapper .icon:hover {
+                background: var(--color-dark-grey);
+                color: var(--color-pure-white);
+                border-radius: 50px;
+            }
             & .post-title {
                 @mixin style-font-poppins 600, 18px;
             }
@@ -22,10 +27,16 @@
                     font-size: 22px;
                     margin-right: 10px;
                 }
+                &:hover {
+                    background: rgba(41,134,204, 0.8);
+                }
             }
             & .card-cta-edit {
                 & .icon {
                     font-size: 18px;
+                }
+                &:hover {
+                    background: rgba(246,178,107, 0.8);
                 }
             }
         }
