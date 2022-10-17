@@ -27,6 +27,7 @@ function Post(props) {
         const comments = await getComments(postId);
         if (comments && comments.length > 0) {
             setComments(comments);
+            setEditMode(false);
             setShowModal(!showModal);
         }
     }
@@ -62,6 +63,7 @@ function Post(props) {
                                 <Pressable
                                     onPress={() => {
                                         setShowModal(!showModal);
+                                        setEditMode(false);
                                         if(editMode) {
                                             setPostTitle('');
                                             setPostDesc('');
@@ -89,7 +91,7 @@ function Post(props) {
                                 )
                             })}
                         </ScrollView>}
-                        {editMode && <ScrollView>
+                        {editMode && <ScrollView style={{width: '100%'}}>
                             <View>
                                 <Text style={styles.editPostTitle}>Title</Text>
                                 <TextInput
